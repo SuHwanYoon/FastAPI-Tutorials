@@ -28,7 +28,13 @@ def create_item(item: Item):
     items.append(item)
     return item
 
-@app.get("/items")
+# get리퀘스트를 처리하는 엔드포인트
+# 이 엔드포인트는 아이템 목록을 조회합니다.
+# skip과 limit 파라미터를 사용하여 아이템을 페이징 처리합니다
+# 반환값은 아이템 목록입니다.
+# response_model을 사용하여 반환되는 데이터의 형식을 지정합니다.
+# 이 경우, 반환되는 데이터는 Item 모델의 리스트입니다.
+@app.get("/items" , response_model=list[Item])
 def list_items(skip: int = 0, limit: int = 10) -> list:
     """
     아이템 목록을 조회하는 엔드포인트입니다.
@@ -37,7 +43,12 @@ def list_items(skip: int = 0, limit: int = 10) -> list:
     return items[skip: skip + limit]
 
 
-@app.get("/items/{item_id}")
+# 특정 아이템을 조회하는 엔드포인트입니다.
+# 아이템 ID에 해당하는 문자열을 반환합니다.
+# 아이템 ID가 유효하지 않은 경우 404 오류를 발생시킵니다
+# response_model을 사용하여 반환되는 데이터의 형식을 지정합니다.
+# 이 경우, 반환되는 데이터는 Item 모델입니다. 
+@app.get("/items/{item_id}" , response_model=Item)
 def read_item(item_id: int) -> Item:
     """
     특정 아이템을 조회하는 엔드포인트입니다.
